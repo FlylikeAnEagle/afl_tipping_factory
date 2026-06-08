@@ -1,0 +1,35 @@
+# AFL Tipping Factory Configuration
+
+elo:
+  k: 32
+  initial_rating: 1500
+  home_ground_advantage: 50
+  margin_factor: 0.03
+
+afl_teams:
+  - Adelaide
+  - Brisbane
+  - Carlton
+  - Collingwood
+  - Essendon
+  - Fremantle
+  - Geelong
+  - Gold Coast
+  - GWS
+  - Hawthorn
+  - Melbourne
+  - North Melbourne
+  - Port Adelaide
+  - Richmond
+  - St Kilda
+  - Sydney
+  - West Coast
+  - Western Bulldogs
+
+venues:
+  indoor:
+    - Marvel Stadium
+  home_ground_strong:
+    - GMHBA Stadium
+    - Adelaide Oval
+    - Optus Stadium
