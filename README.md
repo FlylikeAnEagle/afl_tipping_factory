@@ -28,6 +28,21 @@ cp data/templates/odds_template.csv     data/manual/odds_round14_2025.csv
 cp data/templates/results_template.csv   data/manual/results_round14_2025.csv
 ```
 
+### Quick Start: new-round helper
+
+Create blank CSVs from templates for any round:
+
+```bash
+python -m src new-round --season 2026 --round 14
+```
+
+This creates:
+- `data/manual/fixtures_2026_round14.csv`
+- `data/manual/odds_2026_round14.csv`
+- `data/manual/results_2026_round14.csv`
+
+Existing files are not overwritten unless you add `--force`.
+
 ### Required CSV Columns
 
 | CSV | Required Columns |

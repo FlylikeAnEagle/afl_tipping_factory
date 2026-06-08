@@ -67,6 +67,56 @@ def cmd_post_round(args):
     run_post_round(results_csv, args.season, args.round, db_path=args.db)
 
 
+def cmd_new_round(args):
+    """Create blank CSVs from templates for a new round."""
+    if args.season < 2000 or args.season > 2100:
+        print(f"Invalid season: {args.season} (must be 2000-2100)")
+        sys.exit(1)
+    if args.round < 1 or args.round > 27:
+        print(f"Invalid round: {args.round} (must be 1-27)")
+        sys.exit(1)
+    season = args.season
+    round_num = args.round
+    manual_dir = ROOT / "data" / "manual"
+    manual_dir.mkdir(exist_ok=True)
+
+    templates = {
+        "fixtures": ROOT / "data" / "templates" / "fixtures_template.csv",
+        "odds": ROOT / "data" / "templates" / "odds_template.csv",
+        "results": ROOT / "data" / "templates" / "results_template.csv",
+    }
+
+    targets = {
+        "fixtures": manual_dir / f"fixtures_{season}_round{round_num}.csv",
+        "odds": manual_dir / f"odds_{season}_round{round_num}.csv",
+        "results": manual_dir / f"results_{season}_round{round_num}.csv",
+    }
+
+    created = []
+    skipped = []
+    for kind, src in templates.items():
+        dst = targets[kind]
+        if dst.exists() and not args.force:
+            skipped.append(str(dst))
+            continue
+        content = src.read_text()
+        dst.write_text(content)
+        created.append(str(dst))
+
+    if skipped:
+        print("Skipped (already exist, use --force to overwrite):")
+        for s in skipped:
+            print(f"  {s}")
+
+    if created:
+        print("Created:")
+        for c in created:
+            print(f"  {c}")
+
+    if not created and not skipped:
+        print("No files created.")
+
+
 def cmd_matrix(args):
     from .db import init_db
     from .matrix import print_tipping_matrix
@@ -93,6 +143,10 @@ def main(argv=None):
     mat = sub.add_parser("matrix", help="Print tipping matrix from existing data")
     add_common_args(mat)
 
+    nr = sub.add_parser("new-round", help="Create blank CSVs from templates for a new round")
+    add_common_args(nr)
+    nr.add_argument("--force", action="store_true", help="Overwrite existing files")
+
     args = parser.parse_args(argv)
 
     if args.command == "init-db":
@@ -103,6 +157,8 @@ def main(argv=None):
         cmd_post_round(args)
     elif args.command == "matrix":
         cmd_matrix(args)
+    elif args.command == "new-round":
+        cmd_new_round(args)
     else:
         parser.print_help()
         sys.exit(1)
