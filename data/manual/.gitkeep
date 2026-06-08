@@ -1,0 +1,7 @@
+# This directory holds your real AFL round data.
+# Copy templates from data/templates/ here, fill in, and run the pipeline.
+#
+# Example:
+#   cp data/templates/fixtures_template.csv data/manual/fixtures_round14_2025.csv
+#   # edit the CSV with real fixture data
+#   python -m src pre-round --round 14 --season 2025 --fixture data/manual/fixtures_round14_2025.csv --odds data/manual/odds_round14_2025.csv

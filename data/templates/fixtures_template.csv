@@ -1,0 +1,11 @@
+match_id,season,round,match_date,kickoff_time,venue,neutral_venue,home_team,away_team
+2025R14HawksBlues,2025,14,2025-06-20,19:50,MCG,0,Hawthorn,Carlton
+# Required columns: match_id, season, round, home_team, away_team
+# Optional columns: match_date (YYYY-MM-DD), kickoff_time (HH:MM), venue, neutral_venue (0 or 1)
+#
+# match_id format: {season}R{round}{Home}{Away} — e.g. 2025R14HawksBlues
+# Use short team names from the official list:
+#   Adelaide, Brisbane, Carlton, Collingwood, Essendon, Fremantle,
+#   Geelong, Gold Coast, GWS, Hawthorn, Melbourne, North Melbourne,
+#   Port Adelaide, Richmond, St Kilda, Sydney, West Coast, Western Bulldogs
+# neutral_venue: 0 = normal home/away, 1 = neutral ground (e.g. Gather Round)

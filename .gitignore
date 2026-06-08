@@ -2,6 +2,9 @@
 *.db
 *.sqlite3
 
+# Manual round data (keep templates, ignore real data)
+data/manual/*.csv
+
 # Python
 __pycache__/
 *.py[cod]

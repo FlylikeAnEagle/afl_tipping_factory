@@ -45,7 +45,7 @@ class TestLoadFixtures:
     def test_missing_columns_raises(self, initialized_db, tmp_path):
         bad_csv = tmp_path / "bad.csv"
         bad_csv.write_text("match_id,home_team\n1,Collingwood\n")
-        with pytest.raises(ValueError, match="missing columns"):
+        with pytest.raises(ValueError, match="missing required columns"):
             load_fixtures(str(bad_csv), initialized_db)
 
 
@@ -96,15 +96,13 @@ class TestLoadOdds:
 
 
 class TestLoadResults:
-    def test_load_sample_results(self, initialized_db):
-        load_fixtures(FIXTURE_CSV, initialized_db)
-        count = load_results(RESULTS_CSV, initialized_db)
+    def test_load_sample_results(self, populated_db):
+        count = load_results(RESULTS_CSV, populated_db)
         assert count == 9
 
-    def test_winner_calculated(self, initialized_db):
-        load_fixtures(FIXTURE_CSV, initialized_db)
-        load_results(RESULTS_CSV, initialized_db)
-        conn = get_connection(initialized_db)
+    def test_winner_calculated(self, populated_db):
+        load_results(RESULTS_CSV, populated_db)
+        conn = get_connection(populated_db)
         row = conn.execute("SELECT * FROM matches WHERE match_id = '2025R12HawksBlues'").fetchone()
         conn.close()
         assert row["actual_winner"] == "home"

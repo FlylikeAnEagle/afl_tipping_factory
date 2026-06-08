@@ -1,0 +1,10 @@
+match_id,home_score,away_score
+2025R14HawksBlues,98,76
+# Required columns: match_id, home_score, away_score
+#
+# match_id must match a fixture match_id exactly
+# Scores: integer final scores only (no quarter-by-quarter)
+# Winner is calculated automatically (home if home_score > away_score, etc.)
+#
+# Fill this in AFTER the round is complete
+# Then run: python -m src post-round --round 14 --season 2025 --results data/manual/results_round14_2025.csv

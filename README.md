@@ -16,6 +16,65 @@ Key metric: not just strike rate, but whether model fades against the bookie fav
 pip install -r requirements.txt
 ```
 
+## Preparing a Real Round
+
+### CSV Templates
+
+Blank templates live in `data/templates/`. Copy them to `data/manual/`, fill in, and run:
+
+```bash
+cp data/templates/fixtures_template.csv data/manual/fixtures_round14_2025.csv
+cp data/templates/odds_template.csv     data/manual/odds_round14_2025.csv
+cp data/templates/results_template.csv   data/manual/results_round14_2025.csv
+```
+
+### Required CSV Columns
+
+| CSV | Required Columns |
+|---|---|
+| **Fixtures** | `match_id`, `season`, `round`, `home_team`, `away_team` |
+| **Odds** | `match_id`, `home_odds`, `away_odds`, `market_source` |
+| **Results** | `match_id`, `home_score`, `away_score` |
+
+### Optional Fixture Columns
+
+`match_date` (YYYY-MM-DD), `kickoff_time` (HH:MM), `venue`, `neutral_venue` (0 or 1)
+
+### match_id Format
+
+`{season}R{round}{HomeShort}{AwayShort}` — e.g. `2025R14HawksBlues`
+
+### Valid Team Names
+
+Adelaide, Brisbane, Carlton, Collingwood, Essendon, Fremantle, Geelong, Gold Coast, GWS, Hawthorn, Melbourne, North Melbourne, Port Adelaide, Richmond, St Kilda, Sydney, West Coast, Western Bulldogs
+
+### market_source Prefix
+
+Use `manual_` prefix to protect odds from overwrite: `manual_sportsbet`, `manual_tab`, `manual_pointsbet`
+
+### Real Round Workflow
+
+```bash
+# Before the round — fill in fixtures + odds CSVs, then:
+python -m src pre-round --round 14 --season 2025 \
+  --fixture data/manual/fixtures_round14_2025.csv \
+  --odds data/manual/odds_round14_2025.csv
+
+# After the round — fill in results CSV, then:
+python -m src post-round --round 14 --season 2025 \
+  --results data/manual/results_round14_2025.csv
+```
+
+### Input Validation
+
+The loaders validate:
+- Missing required columns (friendly error listing found vs required)
+- Unrecognised team names (warning with full valid list)
+- Odds must be positive decimal numbers
+- Match IDs in odds/results must exist in fixtures (load fixtures first)
+- Results cannot be loaded before predictions exist (run pre-round first)
+- Negative scores rejected
+
 ## Manual Round Workflow
 
 ### 1. Initialise the database
@@ -114,9 +173,11 @@ python -m pytest -v
 afl_tipping_factory/
 ├── config/config.yaml          # Teams, Elo settings, venues
 ├── data/
-│   ├── fixtures/               # Manual fixture CSVs
-│   ├── odds/                   # Manual odds CSVs
-│   └── results/                # Manual results CSVs
+│   ├── fixtures/               # Sample fixture CSVs
+│   ├── odds/                   # Sample odds CSVs
+│   ├── results/                # Sample results CSVs
+│   ├── templates/              # Blank CSV templates for real rounds
+│   └── manual/                 # Your real round data (gitignored)
 ├── sql/schema.sql              # SQLite schema
 ├── src/
 │   ├── __main__.py             # CLI entrypoint

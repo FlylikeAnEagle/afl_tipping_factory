@@ -1,0 +1,11 @@
+match_id,home_odds,away_odds,market_source
+2025R14HawksBlues,1.55,2.45,manual_sportsbet
+# Required columns: match_id, home_odds, away_odds, market_source
+#
+# match_id must match a fixture match_id exactly
+# Odds: decimal format (e.g. 2.10 means $2.10 return on $1)
+# market_source: use "manual_sportsbet", "manual_tab", "manual_pointsbet", etc.
+#   - Sources starting with "manual_" are protected from overwrite by non-manual data
+#
+# Get odds from: Sportsbet, PointsBet, TAB, Ladbrokes, etc.
+# Enter odds at the same time as fixtures, before running pre-round
